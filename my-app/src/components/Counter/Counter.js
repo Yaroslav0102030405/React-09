@@ -1,45 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {connect} from 'react-redux'
 import Controls from './Controls';
 import Value from './Value';
 import './Counter.css';
 
-class Counter extends Component {
-  static defaultProps = {
-    initialValue: 0,
-  };
 
-  static propTypes = {
-    //
-  };
+function Counter({ value}) {
+  return (
+    <div className="Counter">
+      <Value value={value} />
+{/* 
+      <Controls
+        onIncrement={this.handleIncrement}
+        onDecrement={this.handleDecrement}
+      /> */}
+      Counter
+     
+    </div>
+  );
+}
 
-  state = {
-    value: this.props.initialValue,
-  };
-
-  handleIncrement = () => {
-    this.setState(prevState => ({
-      value: prevState.value + 1,
-    }));
-  };
-
-  handleDecrement = () => {
-    this.setState(prevState => ({
-      value: prevState.value - 1,
-    }));
-  };
-
-  render() {
-    return (
-      <div className="Counter">
-        <Value value={this.state.value} />
-
-        <Controls
-          onIncrement={this.handleIncrement}
-          onDecrement={this.handleDecrement}
-        />
-      </div>
-    );
+const mapStateToProps = state => {
+  return {
+    value: state.counterValue,
   }
 }
 
-export default Counter;
+
+export default connect(mapStateToProps)(Counter);
