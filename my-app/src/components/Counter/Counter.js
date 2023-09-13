@@ -1,30 +1,38 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux';
+import * as action from '../../redux/actions';
 import Controls from './Controls';
 import Value from './Value';
 import './Counter.css';
 
-
-function Counter({ value}) {
+// 6 шаг - добавдянм такие пропсы
+function Counter({ value, step, onIncrement, onDecrement }) {
   return (
     <div className="Counter">
       <Value value={value} />
-{/* 
+
       <Controls
-        onIncrement={this.handleIncrement}
-        onDecrement={this.handleDecrement}
-      /> */}
-      Counter
-     
+        step={step}
+        onIncrement={() => onIncrement(step)}
+        onDecrement={() => onDecrement(step)}
+      />
     </div>
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    value: state.counterValue,
-  }
-}
+// используем аргументы коннекта чтобы привязать кусочки стейта к пропам компонента
+const mapStateToProps = state => ({
+  value: state.counter.value,
+  step: state.counter.step,
+});
 
+// используем аргументы коннекта и делаем диспат экшина чтобы привязать к пропам компонента
+const mapDispatchToProps = dispatch => ({
+  // возращаем эти обьекты которые распыляються как пропсы
+  onIncrement: value => dispatch(action.increment(value)),
+  onDecrement: value => dispatch(action.decrement(value)),
+});
 
-export default connect(mapStateToProps)(Counter);
+// 7 шаг - мы экспортируем коннект
+// вызываем конект и передаем настройки
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
